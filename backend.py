@@ -295,13 +295,16 @@ Be specific and actionable, not generic advice.""",
 # 🤖 MODEL CALL
 # ===============================
 def call_model(model_id, prompt, max_tokens):
-    completion = client.chat.completions.create(
+    # Use text generation instead of chat completions
+    response = client.text_generation(
+        prompt=prompt,
         model=model_id,
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=max_tokens,
+        max_new_tokens=max_tokens,
         temperature=0.6,
+        stream=False,
+        details=False,
     )
-    return completion.choices[0].message["content"]
+    return response
 
 # ===============================
 # ✂️ TRUNCATION CHECK
@@ -485,3 +488,4 @@ def generate_response(user_input, continue_generation=False):
             "business_focus": True
 
         }
+
