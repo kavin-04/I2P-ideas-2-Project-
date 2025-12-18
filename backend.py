@@ -6,7 +6,10 @@ import os
 # ===============================
 HF_TOKEN = os.environ.get("HF_TOKEN")
 
-client = InferenceClient(token=HF_TOKEN)
+client = InferenceClient(
+    token=HF_TOKEN,
+    base_url="https://router.huggingface.co"  # Use the new router endpoint
+)
 
 # ===============================
 # 🧠 MODEL CONFIG (BUSINESS OPTIMIZED)
@@ -488,4 +491,5 @@ def generate_response(user_input, continue_generation=False):
             "business_focus": True
 
         }
+
 
