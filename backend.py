@@ -6,7 +6,7 @@ import os
 # ===============================
 HF_TOKEN = os.environ.get("HF_TOKEN")
 
-client = InferenceClient(api_key=HF_TOKEN)
+client = InferenceClient(token=HF_TOKEN)
 
 # ===============================
 # 🧠 MODEL CONFIG (BUSINESS OPTIMIZED)
@@ -483,4 +483,5 @@ def generate_response(user_input, continue_generation=False):
             "completed": True,
             "error": str(e),
             "business_focus": True
+
         }
