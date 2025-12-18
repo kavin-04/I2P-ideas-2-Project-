@@ -298,17 +298,27 @@ Be specific and actionable, not generic advice.""",
 # 🤖 MODEL CALL
 # ===============================
 def call_model(model_id, prompt, max_tokens):
-    # Use text generation instead of chat completions
-    response = client.text_generation(
-        prompt=prompt,
-        model=model_id,
-        max_new_tokens=max_tokens,
-        temperature=0.6,
-        stream=False,
-        details=False,
-    )
-    return response
-
+    # Check if model is conversational (Llama models)
+    if "llama" in model_id.lower() or "instruct" in model_id.lower():
+        # Use chat completion for conversational models
+        response = client.chat.completions.create(
+            model=model_id,
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=max_tokens,
+            temperature=0.6,
+        )
+        return response.choices[0].message.content
+    else:
+        # Use text generation for other models
+        response = client.text_generation(
+            prompt=prompt,
+            model=model_id,
+            max_new_tokens=max_tokens,
+            temperature=0.6,
+            stream=False,
+            details=False,
+        )
+        return response
 # ===============================
 # ✂️ TRUNCATION CHECK
 # ===============================
@@ -491,5 +501,6 @@ def generate_response(user_input, continue_generation=False):
             "business_focus": True
 
         }
+
 
 
